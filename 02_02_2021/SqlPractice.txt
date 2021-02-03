@@ -1,0 +1,112 @@
+create table Tb_Employee(
+
+EmpId int,
+EmpName varchar(20),
+MobileNo char(10),
+Gender char(1) constraint emp_Gender_chk check(Gender in('M','F')),
+DeptId int
+)
+
+create table Tb_Department(
+
+DeptId int,
+DeptName varchar(20)
+
+)
+
+alter table Tb_Employee alter column EmpId int not null 
+alter table Tb_Employee add constraint EmpId_pk primary key(EmpId) 
+
+alter table Tb_Employee add constraint Emp_Dept_fk foreign key(Deptid) references Tb_Department(DeptId) 
+
+alter table Tb_Department alter column DeptId int not null
+
+alter table Tb_Department add constraint DeptId_pk primary key(DeptId)
+
+alter table Tb_Employee add Salary numeric(8,2)
+
+select * from Tb_Employee
+
+select * from Tb_Department
+
+insert into Tb_Department values (3,'Admin')
+
+insert into Tb_Employee values (4,'Vishnu','8866332255','M',1,50000)
+
+update Tb_employee 
+set Gender='F'
+where EmpName='Ravina'
+
+<---try catch block--->
+begin
+  begin try
+  declare @EmpName varchar(20);
+  declare @salary numeric(8,2);
+  select @EmpName=Empname,@salary=Salary from Tb_Employee where EmpId=1;
+  print @EmpName+ 'earns'+@salary;
+  end try
+
+  begin catch
+    select
+	 @@ERROR as error,
+	 ERROR_MESSAGE() as ErrorMessage;
+  end catch;
+ end
+
+
+<-- type cast-->
+ begin
+  declare @EmpName varchar(20);
+  declare @salary numeric(8,2);
+  select @EmpName=Empname,@salary=Salary from Tb_Employee
+  where EmpId=2;
+  print @EmpName +'earns'+cast(@salary as varchar);
+end
+
+
+<--if else block -->
+begin
+  declare @EmpName varchar(20);
+  declare @salary numeric(8,2);
+  declare @grade char(1);
+  select @EmpName=Empname,@salary=Salary from Tb_Employee
+  where EmpId=4;
+
+  if @salary>=30000
+   begin
+   set @grade='A';
+   end
+  else
+   begin
+    set @grade='B';
+	end
+  print @EmpName +' earns '+cast(@salary as varchar)+' is in grade '+@grade;
+end
+
+
+<--While block-->
+begin
+  declare @EmpName varchar(20);
+  declare @salary numeric(8,2);
+  declare @grade char(1);
+  declare @id int;
+  set @id=1;
+  while @id<=10
+  begin
+     select @EmpName=Empname,@salary=Salary from Tb_Employee
+     where EmpId=@id;
+	 if @salary>=30000
+	   begin
+	    set @grade='A';
+	   end
+	 else
+	  begin
+	    set @grade='B';
+	  end  
+   print @EmpName +' earns '+cast(@salary as varchar)+' is in grade '+@grade;
+   set @id=@id+1;
+  end
+ end
+
+
+  
