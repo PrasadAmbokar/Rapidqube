@@ -1,0 +1,44 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Information";
+}
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>EmpId</th>
+        <th>Employee Name</th>
+        <th>Dept Name</th>
+        <th>DOB</th>
+        <th>Designation</th>
+        <th>DOJ</th>
+        <th>Degree</th>
+        <th>POY</th>
+        <th>BankName</th>
+        <th>AccNo</th>        
+        <th>GrossSalary</th>
+        <th></th>
+        
+
+    </tr>
+    @for (int i = 0; i < Model.Rows.Count; i++)
+    {
+<tr>
+    <td>@Model.Rows[i]["EmpId"]</td>
+    <td>@Model.Rows[i]["EmpName"]</td>
+    <td>@Model.Rows[i]["DeptName"]</td>
+    <td>@Model.Rows[i]["DOB"]</td>
+    <td>@Model.Rows[i]["Designation"]</td>
+    <td>@Model.Rows[i]["DOJ"]</td>
+    <td>@Model.Rows[i]["Degree"]</td>
+    <td>@Model.Rows[i]["POY"]</td>
+    <td>@Model.Rows[i]["BankName"]</td>
+    <td>@Model.Rows[i]["AccNo"]</td>
+    <td><a href="@Url.Action("Distribution", "EditAllColumnOfEmployee", new{@id=@Model.Rows[i]["EmpId"]})">@Model.Rows[i]["GrossSalary"]</a></td>
+    <td>
+        <a href="@Url.Action("EditEmployee3","EditAllColumnOfEmployee",new { @id = @Model.Rows[i][0] })">Edit</a>
+        <a href="@Url.Action("DeleteEmployee","ShowData",new { @id = @Model.Rows[i][0] })">Delete</a>
+    </td>
+
+</tr>
+    }
+</table>
