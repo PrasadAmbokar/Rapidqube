@@ -1,0 +1,251 @@
+ALTER PROC [dbo].[Sp_empAdd]
+
+@EmpName nvarchar(20),
+--@DeptId int,
+@DeptName varchar(50)
+
+AS 
+BEGIN 
+ 
+    --insert into Employee(EmpName,DeptId) values(@EmpName,@DeptId);
+	
+	 
+	--select EmpName from Employee
+	--JOIN Department ON Department.DeptId=IDENT_CURRENT('Employee')
+	--where EmpName=@EmpName;
+	insert into EmployeeDetails2(DOJ,Designation,DOB,Degree,POY,EmpId) values (0,0,0,0,0,@@IDENTITY);
+	insert into BankDetails2(BankName,AccNo,BasicSalary,HRA,OtherAllowance,GrossSalary,PF,MedicalPremium,TDS,NetSalary,EmpId) values(0,0,0,0,0,0,0,0,0,0,IDENT_CURRENT('Employee'))
+	--insert into EmployeeDetails2(DOJ,Degree,Designation,DOB,POY) values(0,0,0,0,0);
+	--insert into BankDetails2(BankName,AccNo,BasicSalary,HRA,OtherAllowance,GrossSalary,PF,MedicalPremium,TDS,NetSalary) values(0,0,0,0,0,0,0,0,0,0); 
+	--insert into EmployeeDetails(DOJ,DOB,POY,Degree,Designation) values(@DOJ,@DOB,@POY,@Degree,@Designation);
+	--insert into BankDetails(AccountNo,Name,GrossSalary) values(@Acc_No,@Bank_Name,@GrossSalary)
+
+	--INSERT INTO Employee( Emp_Id, Emp_Name)
+ --   values (@Emp_Id,@Emp_Name)
+ --   INNER JOIN table2 c ON c.Id = p.Id
+ --   INNER JOIN table3 n ON p.Id = n.Id
+	    
+END
+
+ALTER proc [dbo].[Sp_Delete]
+@EmpId int
+
+as 
+begin
+delete from BankDetails2 where EmpId=@EmpId
+delete from EmployeeDetails2 where EmpId=@EmpId
+delete from Employee where EmpId=@EmpId
+end
+
+ALTER proc [dbo].[Sp_DeleteDept]
+@DeptId int
+as 
+begin
+delete from Employee where DeptId=@DeptId 
+delete from Department where DeptId=@DeptId
+end
+
+ALTER PROC [dbo].[Sp_deptAdd]
+
+@DeptName nvarchar(20)
+AS 
+BEGIN 
+ 
+	insert into Department(DeptName) values(@DeptName);
+		    
+END
+
+ALTER proc [dbo].[Sp_Distribution]
+@EmpId int
+as
+begin
+Select EmpId,BankName,AccNo,BasicSalary,HRA,OtherAllowance,GrossSalary,PF,MedicalPremium,TDS,NetSalary
+from BankDetails2 
+where EmpId=@EmpId
+end
+
+ALTER PROC [dbo].[Sp_EditAllInformation]
+
+@EmpName varchar(20),
+@DeptName varchar(20),
+@DOB date,
+@Designation varchar(20),
+@DOJ date,
+@Degree varchar(20),
+@POY date,
+@BankName varchar(20),
+@AccNo int,
+@GrossSalary varchar(20)
+
+AS 
+BEGIN 
+Declare @deptID int
+INsert into Department(DeptName)
+Values (@DeptName)
+Set @deptID= SCOPE_IDENTITY() 
+
+Declare @EmpId int
+INsert into Employee(EmpName,DeptId)
+values(@EmpName,@deptID)
+Set @EmpId=SCOPE_IDENTITY()
+
+Insert into EmployeeDetails2(DOJ,Degree,Designation,DOB,POY)
+values (@DOJ,@Degree,@Designation,@DOB,@POY)
+
+Insert into BankDetails2(BankName,AccNo,GrossSalary)
+values(@BankName,@AccNo,@GrossSalary)
+
+end
+
+ALTER proc [dbo].[Sp_EditAllInformation5]
+@EmpId int,
+@DeptId int,
+@EmpName varchar(20),
+--@DeptName varchar(20),
+@DOB varchar(20),
+@Designation varchar(20),
+@DOJ varchar(20),
+@Degree varchar(20),
+@POY varchar(20),
+@BankName varchar(20),
+@AccNo varchar(10),
+@GrossSalary varchar(10)
+
+AS 
+--if not exists(select EmpId from Employee where EmpId=@EmpId)
+BEGIN 
+
+update Employee
+set EmpName=@EmpName
+where EmpId=@EmpId
+
+update EmployeeDetails2
+set DOJ=@DOJ,Degree=@Degree,Designation=@Designation,DOB=@DOB,POY=@POY
+where EmpId=@EmpId
+
+
+update BankDetails2
+set BankName=@BankName,AccNo=@AccNo,GrossSalary=@GrossSalary,BasicSalary=@GrossSalary-80,HRA=@GrossSalary-80,OtherAllowance=@GrossSalary-80,PF=@GrossSalary-80,MedicalPremium=@GrossSalary-80,TDS=@GrossSalary-40,NetSalary=@GrossSalary-100
+--HRA=@GrossSalary*0.1,OtherAllowance=@GrossSalary*0.1,PF=@GrossSalary*0.1,MedicalPremium=@GrossSalary*0.1,TDS=@GrossSalary*0.05,NetSalary=@GrossSalary-PF-MedicalPremium-TDS
+--set BankName=@BankName,AccNo=@AccNo,GrossSalary=@GrossSalary
+where EmpId=@EmpId
+
+--insert into Employee(EmpName,DeptId) values (@EmpName,@DeptId)
+--insert into EmployeeDetails2(DOJ,Degree,Designation,DOB,POY,EmpId) values(@DOJ,@Degree,@Designation,@DOB,@POY,@EmpId)
+--insert into BankDetails2(BankName,AccNo,GrossSalary,BasicSalary,HRA,OtherAllowance,PF,MedicalPremium,TDS,NetSalary,EmpId) values(@BankName,@AccNo,@GrossSalary,@GrossSalary-80,@GrossSalary-80,@GrossSalary-80,@GrossSalary-80,@GrossSalary-80,@GrossSalary-40,@GrossSalary-100,@EmpId)
+
+--insert into Employee(EmpId,EmpName) values (@EmpId,@EmpName) 
+--insert into EmployeeDetails2(DOJ,Degree,Designation,DOB,POY,EmpId) values (@DOJ,@Degree,@Designation,@DOB,@POY,@EmpId)
+--insert into BankDetails2(BankName,AccNo,GrossSalary,EmpId)values(@BankName,@AccNo,@GrossSalary,@EmpId)
+
+end
+
+ALTER proc [dbo].[Sp_EditBasicInfo]
+@EmpId int
+as 
+begin
+select * from Employee where EmpId=@EmpId
+
+select * from Department 
+end
+
+ALTER PROC [dbo].[Sp_index]
+AS 
+BEGIN 
+ 
+    SELECT EmpId,EmpName, DeptName
+    FROM   Employee emp
+	join Department dept on dept.DeptId=emp.DeptId
+    
+END
+
+ALTER proc [dbo].[Sp_IndexDepartments]
+as 
+begin
+select * from Department
+end
+
+ALTER proc [dbo].[Sp_Information]
+@EmpId int
+as 
+begin
+select EmpId,EmpName,DeptName
+FROM   Employee emp
+	join Department dept on dept.DeptId=emp.DeptId
+	where EmpId=@EmpId
+    
+END
+
+ALTER proc [dbo].[Sp_ShowAllData]
+as 
+begin
+Select * 
+from Employee e 
+JOIN Department d on d.DeptId=e.DeptId
+left JOIN EmployeeDetails2 empd on empd.EmpId=e.EmpId
+left join BankDetails2 bnk on bnk.EmpId=e.EmpId
+end
+
+ALTER proc [dbo].[Sp_ShowAllInformation]
+as
+begin
+SELECT EmpName,DeptName,DOJ,Designation,DOB,Degree,POY,BankName,AccNo,BasicSalary,HRA,OtherAllowance,GrossSalary,PF,MedicalPremium,TDS,NetSalary
+from Employee e 
+join Department d on d.DeptId=e.DeptId 
+left join EmployeeDetails2 empd on empd.EmpId=e.EmpId
+left join BankDetails2 bnk on bnk.EmpId=e.EmpId
+end
+
+ALTER proc [dbo].[Sp_ShowAllInformation2]
+@EmpId int
+as
+begin
+SELECT e.EmpId,EmpName,e.DeptId,DeptName,DOB,Designation,DOJ,Degree,POY,BankName,AccNo,GrossSalary
+from Employee e
+join Department d on d.DeptId=e.DeptId 
+left join EmployeeDetails2 empd on empd.EmpId=e.EmpId
+left join BankDetails2 bnk on bnk.EmpId=e.EmpId
+where e.EmpId=@EmpId 
+
+--insert into EmployeeDetails2(DOJ,Degree,Designation,DOB,POY,EmpId) values(0,0,0,0,0,@EmpId);
+--insert into BankDetails2(BankName,AccNo,BasicSalary,HRA,OtherAllowance,GrossSalary,PF,MedicalPremium,TDS,NetSalary,EmpId) values(0,0,0,0,0,0,0,0,0,0,@EmpId);
+end
+
+ALTER proc [dbo].[Sp_ShowAllInformation3]
+@EmpId int
+as
+begin
+--if(@EmpId=null)
+--Begin
+--   SELECT e.EmpId,EmpName,DeptName,DOB,Designation,DOJ,Degree,POY,BankName,AccNo,GrossSalary
+--   from Employee e
+--   join Department d on d.DeptId=e.DeptId 
+--   left join EmployeeDetails2 empd on empd.EmpId=e.EmpId
+--   left join BankDetails2 bnk on bnk.EmpId=e.EmpId
+--   where e.EmpId=@EmpId 
+--end
+--else
+--begin
+--   SELECT e.EmpId,EmpName,DeptName
+--   from Employee e
+--   join Department d on d.DeptId=e.DeptId
+--   insert into EmployeeDetails2(DOJ,Degree,Designation,DOB,POY,EmpId) values(0,0,0,0,0,@EmpId);
+--   insert into BankDetails2(BankName,AccNo,BasicSalary,HRA,OtherAllowance,GrossSalary,PF,MedicalPremium,TDS,NetSalary,EmpId) values(0,0,0,0,0,0,0,0,0,0,@EmpId);
+--  end
+
+SELECT e.EmpId,e.DeptId,EmpName,DOB,Designation,DOJ,Degree,POY,BankName,AccNo,GrossSalary
+from Employee e
+join Department d on d.DeptId=e.DeptId 
+left join EmployeeDetails2 empd on empd.EmpId=e.EmpId
+left join BankDetails2 bnk on bnk.EmpId=e.EmpId
+where e.EmpId=@EmpId 
+end
+
+ALTER proc [dbo].[Sp_UpdateBasicInfo]
+@EmpId int,
+@EmpName varchar(50),
+@DeptId int
+as 
+begin
+update Employee set EmpName=@EmpName,DeptId=@DeptId where EmpId=@EmpId
+end
