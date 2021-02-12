@@ -1,0 +1,88 @@
+﻿@model AssessmentFinal.Models.AddEmployeeDetails
+
+@{
+    ViewBag.Title = "AddEmployeeDetails";
+}
+
+<h4>AddEmployeeDetails</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddEmployeeDetails">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="EmpName" class="control-label"></label>
+                <input asp-for="EmpName" class="form-control" />
+                <span asp-validation-for="EmpName" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+
+                <label asp-for="DeptId" class="control-label"></label>
+                <input asp-for="DeptId" class="form-control" />
+                <span asp-validation-for="DeptId" class="text-danger"></span>
+            </div>*@@*<br />*@
+
+
+        <div>
+            <label asp-for="DeptName" class="control-lable"></label>
+            <select asp-for="DeptName" asp-items="ViewBag.Department" class="custom-select">
+                <option value="">Choose Department</option>
+            </select>
+        </div>
+            
+        <div>
+            @*@{List<SelectListItem> getDeptName = new List<SelectListItem>(); }
+        @Html.DropDownListFor(model=>model.DeptName,Model.getDeptName,"--select dept--")*@
+            @*<label asp-for="DeptName" class="control-label">Dept Name</label><br />*@
+            @*@Html.DropDownList("Department")*@
+            @*@Html.DropDownListFor(x => x.DeptName, new SelectList(Model.getDeptName, "DeptName"), new { @class = "form-control" })*@
+            @*@Html.DropDownListFor(n => n.DeptName,
+        new SelectList(ViewBag.addEmployeeDetails, "EmpName"))*@
+            @*<input asp-for="DeptName" class="form-control" />*@
+            @*<span asp-validation-for="DeptName" class="text-danger"></span>*@
+        </div>
+            @*<select id="cars">
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="vw">VW</option>
+                <option value="audi" selected>Audi</option>
+            </select>*@
+
+
+            <br />
+
+
+
+
+            @*<select name="Select1" class="form-control">
+            <option value="pick">Choose Department</option>
+
+            <?php
+            $sql = mysqli_query($con, "SELECT Dept_Name From Department");
+            $row = mysqli_num_rows($sql);
+            while ($row = mysqli_fetch_array($sql)){
+            echo "
+            <option value='". $row[' Dept_Name'] ."'>" .$row['Dept_Name'] ."</option>" ;
+            }
+            ?>
+        </select>*@
+
+
+            <div class="form-group">
+                <input type="submit" value="Add Employee" class="btn btn-primary" /><br />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

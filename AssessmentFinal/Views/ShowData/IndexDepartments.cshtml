@@ -1,0 +1,37 @@
+﻿
+@model System.Data.DataTable
+@{
+    ViewBag.Title = "IndexDepartments";
+}
+
+<table class="table table-bordered table-striped">
+    <tr>
+        
+        <th>Dept Id</th>
+        <th>Dept Name</th>
+        <th></th>
+
+    </tr>
+    @for (int i = 0; i < Model.Rows.Count; i++)
+    {
+        <tr>
+            @*<td>
+                <a href="@Url.Action("Information","ShowData",new { @id = Model.Rows[i][0] })">@Model.Rows[i][0]</a>
+            </td>*@
+
+
+            <td>@Model.Rows[i][0]</td>
+            <td>@Model.Rows[i][1]</td>
+            <td>
+                @*<a href="@Url.Action("EditEmployee","ShowData",new { @id = @Model.Rows[i][0] })">Edit</a>*@
+                <a href="@Url.Action("DeleteDepartment","ShowData",new { @id = @Model.Rows[i][0] })">Delete</a>
+            </td>
+
+        </tr>
+    }
+</table>
+@*<a href="@Url.Action("AddEmployeeDetails","ShowData")">Add Employee details</a>*@
+<br />
+<a href="@Url.Action("AddDepartmentDetails","ShowData")">Add Department details</a>
+
+

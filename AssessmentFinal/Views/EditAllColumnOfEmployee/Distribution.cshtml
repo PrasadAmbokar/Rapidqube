@@ -1,0 +1,39 @@
+﻿@model System.Data.DataTable
+@{
+    ViewBag.Title = "Distribution";
+}
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>EmpId</th>
+        <th>BankName</th>
+        <th>AccNo</th>
+        <th>BasicSalary</th>
+        <th>HRA</th>
+        <th>OtherAllowance</th>
+        <th>GrossSalary</th>
+        <th>PF</th>
+        <th>MedicalPremium</th>
+        <th>TDS</th>
+        <th>NetSalary</th>
+        
+
+    </tr>
+    @for (int i = 0; i < Model.Rows.Count; i++)
+    {
+<tr>
+    <td>@Model.Rows[i]["EmpId"]</td>
+    <td>@Model.Rows[i]["BankName"]</td>
+    <td>@Model.Rows[i]["AccNo"]</td>
+    <td>@Model.Rows[i]["BasicSalary"]</td>
+    <td>@Model.Rows[i]["HRA"]</td>
+    <td>@Model.Rows[i]["OtherAllowance"]</td>
+    <td>@Model.Rows[i]["GrossSalary"]</td>
+    <td>@Model.Rows[i]["PF"]</td>
+    <td>@Model.Rows[i]["MedicalPremium"]</td>
+    <td>@Model.Rows[i]["TDS"]</td>
+    <td>@Model.Rows[i]["NetSalary"]</td>
+
+</tr>
+    }
+</table>
