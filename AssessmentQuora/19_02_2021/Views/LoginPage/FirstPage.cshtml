@@ -1,0 +1,44 @@
+﻿@model AssessmentQuora.Models.FirstPage
+
+@{
+    ViewData["Title"] = "FirstPage";
+}
+
+<h1>FirstPage</h1>
+
+<h4>FirstPage</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="FirstPage">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+            <div class="form-group">
+                <label asp-for="Question" class="control-label"></label>
+                <input asp-for="Question" class="form-control" />
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Answer" class="control-label">Answer: </label>
+                <input asp-for="Answer" class="form-control" /><a asp-action="Update">Update your answer</a><br />
+
+                <span asp-validation-for="Answer" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Answer" class="btn btn-primary" />
+                <input type="submit" value="Ask Question??" class="btn btn-primary" />
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
